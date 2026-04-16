@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Day 2 - Forms & Inputs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 450px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+      color: #1a1a2e;
+      margin-bottom: 30px;
+      font-size: 24px;
+    }
+
+    /* Tab Buttons */
+    .tabs {
+      display: flex;
+      margin-bottom: 0;
+    }
+
+    .tabs button {
+      flex: 1;
+      padding: 12px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      background-color: #d0d0d0;
+      color: #555;
+    }
+
+    .tabs button:first-child {
+      border-radius: 8px 0 0 0;
+    }
+
+    .tabs button:last-child {
+      border-radius: 0 8px 0 0;
+    }
+
+    .tabs button.active {
+      background-color: #1a1a2e;
+      color: #fff;
+    }
+
+    /* Form Card */
+    .form-card {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 0 0 10px 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Show/Hide forms */
+    .form-section {
+      display: none;
+    }
+
+    .form-section.active {
+      display: block;
+    }
+
+    /* Labels */
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #1a1a2e;
+    }
+
+    /* Inputs */
+    input {
+      width: 100%;
+      padding: 10px 14px;
+      margin-bottom: 18px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      box-sizing: border-box;
+      color: #333;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #00b4d8;
+    }
+
+    /* Submit Button */
+    button[type="submit"] {
+      width: 100%;
+      padding: 12px;
+      background-color: #1a1a2e;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #00b4d8;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <h1>LOGIN FORM</h1>
+
+    <!-- Tab Buttons -->
+    <div class="tabs">
+      <button class="active" onclick="showTab('login')">Login</button>
+      <button onclick="showTab('signup')">Sign Up</button>
+    </div>
+
+    <div class="form-card">
+
+      <!-- Login Form -->
+      <div class="form-section active" id="login">
+        <form action="" method="post">
+
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" name="email" placeholder="Enter your email" required>
+
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" name="password" placeholder="Enter your password" required>
+
+          <button type="submit">Login</button>
+
+        </form>
+      </div>
+
+      <!-- Signup Form -->
+      <div class="form-section" id="signup">
+        <form action="" method="post">
+
+          <label for="signup-name">Full Name</label>
+          <input type="text" id="signup-name" name="fullname" placeholder="Enter your full name" required>
+
+          <label for="signup-email">Email</label>
+          <input type="email" id="signup-email" name="email" placeholder="Enter your email" required>
+
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password" name="password" placeholder="Create a password" required>
+
+          <label for="signup-confirm">Confirm Password</label>
+          <input type="password" id="signup-confirm" name="confirm_password" placeholder="Repeat your password" required>
+
+          <button type="submit">Sign Up</button>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Tab switching logic -->
+  <script>
+    function showTab(tab) {
+      // Hide all form sections
+      document.querySelectorAll('.form-section').forEach(function(section) {
+        section.classList.remove('active');
+      });
+
+      // Remove active from all tab buttons
+      document.querySelectorAll('.tabs button').forEach(function(btn) {
+        btn.classList.remove('active');
+      });
+
+      // Show selected form section
+      document.getElementById(tab).classList.add('active');
+
+      // Highlight the clicked tab button
+      event.target.classList.add('active');
+    }
+  </script>
+
+</body>
+</html>
