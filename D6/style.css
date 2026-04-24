@@ -1,0 +1,113 @@
+/* Font + reset */
+body {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  height: 100vh;
+
+  /* Background image */
+  background: url("https://images.unsplash.com/photo-1521737604893-d14cc237f11d")
+    no-repeat center center/cover;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Glass container */
+.container {
+  width: 340px;
+  padding: 25px;
+  border-radius: 15px;
+
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  border: 1px solid rgba(255, 255, 255, 0.25);
+
+  text-align: center;
+}
+
+/* Title */
+h1 {
+  margin-bottom: 20px;
+  font-weight: 700;
+  color: white;
+}
+
+/* Input bar (glass effect) */
+.input-area {
+  display: flex;
+  gap: 10px;
+
+  background: rgba(255, 255, 255, 0.2);
+  padding: 10px;
+  border-radius: 10px;
+
+  backdrop-filter: blur(10px);
+}
+
+/* Input field */
+input {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+}
+
+/* Button */
+button {
+  padding: 8px 12px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: 600;
+  background: #ffffff;
+}
+
+/* Task list */
+ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+/* Task item */
+li {
+  background: rgba(255, 255, 255, 0.85);
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 8px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  color: black; /* FIX: task text now black */
+  font-weight: 500;
+}
+
+/* Task text */
+li span {
+  color: black;
+}
+
+/* Delete button */
+li button {
+  background: red;
+  color: white;
+  border: none;
+  padding: 5px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Hover effects */
+li button:hover {
+  opacity: 0.8;
+}
+
+button:hover {
+  opacity: 0.8;
+}

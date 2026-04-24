@@ -1,0 +1,65 @@
+/* Basic Reset */
+body {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+/* Container */
+.container {
+  width: 80%;
+  margin: auto;
+  padding-top: 20px;
+}
+
+/* Header */
+header {
+  background-color: #222;
+  color: white;
+  text-align: center;
+  padding: 30px;
+}
+
+header img {
+  width: 100px;
+  border-radius: 50%;
+}
+
+header h1 {
+  margin: 10px 0 5px;
+}
+
+header p {
+  color: #00b4d8;
+}
+
+/* Sections */
+section {
+  background-color: white;
+  margin-top: 20px;
+  padding: 20px;
+  border-left: 4px solid #00b4d8;
+}
+
+section h2 {
+  margin-top: 0;
+}
+
+/* List */
+ul {
+  padding-left: 20px;
+}
+
+ul li {
+  margin-bottom: 5px;
+}
+
+/* Footer */
+footer {
+  background-color: #222;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  margin-top: 20px;
+}
