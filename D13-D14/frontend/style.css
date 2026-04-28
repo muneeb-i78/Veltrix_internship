@@ -1,0 +1,51 @@
+body {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  background: linear-gradient(135deg, #1a1a1a, #333);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* container */
+.container {
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(12px);
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+/* inputs */
+input {
+  display: block;
+  width: 250px;
+  margin: 10px auto;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  color: black;
+}
+
+/* button */
+button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background: black;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+/* toggle */
+#toggleBtn {
+  color: cyan;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+#message {
+  margin-top: 10px;
+}
