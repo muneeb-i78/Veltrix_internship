@@ -41,24 +41,27 @@ router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    // ✅ validation FIRST
+    if (!email || !password) {
+      return res.status(400).json({ message: "All fields required" });
+    }
+
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.json({ message: "Invalid credentials" });
+      return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // 🔐 COMPARE PASSWORD
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (isMatch) {
       res.json({ message: "Login successful" });
     } else {
-      res.json({ message: "Invalid credentials" });
+      return res.status(401).json({ message: "Invalid credentials" });
     }
 
   } catch (error) {
-    res.json({ message: "Login error" });
+    res.status(500).json({ message: "Login error" });
   }
 });
-
 module.exports = router;
