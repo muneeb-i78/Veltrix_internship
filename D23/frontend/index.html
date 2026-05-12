@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tasik – Task Manager</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #0f0c29;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* ── Gradient Background ── */
+    .bg {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+      z-index: 0;
+    }
+
+    /* ── Floating Bubbles ── */
+    .bubbles {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.35;
+      animation: float linear infinite;
+    }
+
+    .bubble:nth-child(1)  { width: 400px; height: 400px; background: #7c3aed; left: -100px; top: -100px; animation-duration: 18s; }
+    .bubble:nth-child(2)  { width: 300px; height: 300px; background: #06b6d4; right: -80px;  top: 10%;   animation-duration: 22s; animation-delay: -4s; }
+    .bubble:nth-child(3)  { width: 250px; height: 250px; background: #ec4899; left: 30%;    top: 60%;   animation-duration: 16s; animation-delay: -8s; }
+    .bubble:nth-child(4)  { width: 200px; height: 200px; background: #f59e0b; right: 20%;   bottom: 5%; animation-duration: 20s; animation-delay: -2s; }
+    .bubble:nth-child(5)  { width: 150px; height: 150px; background: #10b981; left: 10%;    bottom: 20%;animation-duration: 14s; animation-delay: -6s; }
+    .bubble:nth-child(6)  { width: 180px; height: 180px; background: #6366f1; left: 50%;    top: 5%;    animation-duration: 25s; animation-delay: -10s; }
+
+    @keyframes float {
+      0%   { transform: translateY(0px) scale(1); }
+      33%  { transform: translateY(-40px) scale(1.05); }
+      66%  { transform: translateY(20px) scale(0.95); }
+      100% { transform: translateY(0px) scale(1); }
+    }
+
+    /* ── Card ── */
+    .card {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 420px;
+      margin: 20px;
+      border-radius: 24px;
+      overflow: hidden;
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      box-shadow: 0 24px 64px rgba(0,0,0,0.4);
+    }
+
+    /* ── Branding ── */
+    .brand {
+      text-align: center;
+      padding: 32px 30px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .brand-name {
+      font-size: 42px;
+      font-weight: 800;
+      letter-spacing: -2px;
+      background: linear-gradient(135deg, #fff 0%, #a78bfa 50%, #06b6d4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+    }
+
+    .brand-sub {
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    /* ── Tabs ── */
+    .tabs {
+      display: flex;
+      margin: 20px 20px 0;
+      background: rgba(0,0,0,0.2);
+      border-radius: 12px;
+      padding: 4px;
+      backdrop-filter: blur(10px);
+    }
+
+    .tabs button {
+      flex: 1;
+      padding: 10px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      border: none;
+      background: transparent;
+      color: rgba(255,255,255,0.4);
+      border-radius: 9px;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+
+    .tabs button.active {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    /* ── Form ── */
+    .form-body { padding: 20px 24px 28px; }
+
+    .form-section { display: none; }
+    .form-section.active { display: block; }
+
+    .form-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .form-sub {
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 20px;
+    }
+
+    .input-group { margin-bottom: 14px; }
+
+    label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    input {
+      width: 100%;
+      padding: 11px 14px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 10px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      color: #fff;
+      transition: all 0.2s;
+    }
+
+    input::placeholder { color: rgba(255,255,255,0.25); }
+
+    input:focus {
+      outline: none;
+      border-color: #a78bfa;
+      background: rgba(255,255,255,0.1);
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 13px;
+      background: linear-gradient(135deg, #7c3aed, #06b6d4);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 6px;
+      transition: opacity 0.2s;
+    }
+
+    .submit-btn:hover   { opacity: 0.9; }
+    .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .message {
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 12px;
+      display: none;
+    }
+
+    .message.success { background: rgba(16,185,129,0.2); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.3); display: block; }
+    .message.error   { background: rgba(239,68,68,0.2);  color: #fca5a5; border: 1px solid rgba(239,68,68,0.3);  display: block; }
+
+    @media (max-width: 480px) {
+      .brand-name { font-size: 34px; }
+      .form-body  { padding: 16px 18px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg"></div>
+
+  <!-- Floating Bubbles -->
+  <div class="bubbles">
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+  </div>
+
+  <!-- Glass Card -->
+  <div class="card">
+
+    <!-- Brand -->
+    <div class="brand">
+      <div class="brand-name">TASIK</div>
+      <div class="brand-sub">Task Manager</div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="active" onclick="switchTab('login', this)">Login</button>
+      <button onclick="switchTab('register', this)">Register</button>
+    </div>
+
+    <div class="form-body">
+
+      <!-- Login -->
+      <div class="form-section active" id="login">
+        <p class="form-title">Welcome back</p>
+        <p class="form-sub">Login to manage your tasks</p>
+        <form onsubmit="handleLogin(event)">
+          <div class="input-group">
+            <label>Email</label>
+            <input type="email" id="login-email" placeholder="you@example.com" required>
+          </div>
+          <div class="input-group">
+            <label>Password</label>
+            <input type="password" id="login-password" placeholder="••••••••" required>
+          </div>
+          <button class="submit-btn" type="submit" id="login-btn">Login</button>
+        </form>
+        <div class="message" id="login-msg"></div>
+      </div>
+
+      <!-- Register -->
+      <div class="form-section" id="register">
+        <p class="form-title">Create account</p>
+        <p class="form-sub">Start managing your tasks today</p>
+        <form onsubmit="handleRegister(event)">
+          <div class="input-group">
+            <label>Full Name</label>
+            <input type="text" id="reg-name" placeholder="Your name" required>
+          </div>
+          <div class="input-group">
+            <label>Email</label>
+            <input type="email" id="reg-email" placeholder="you@example.com" required>
+          </div>
+          <div class="input-group">
+            <label>Password</label>
+            <input type="password" id="reg-password" placeholder="Min. 6 characters" required minlength="6">
+          </div>
+          <button class="submit-btn" type="submit" id="reg-btn">Create Account</button>
+        </form>
+        <div class="message" id="reg-msg"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const API = 'http://localhost:3000';
+
+    function switchTab(tab, btn) {
+      document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
+      document.getElementById(tab).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    function showMsg(id, text, type) {
+      const el = document.getElementById(id);
+      el.textContent = text;
+      el.className = `message ${type}`;
+    }
+
+    function setBtn(id, loading, defaultText) {
+      const b = document.getElementById(id);
+      b.disabled = loading;
+      b.textContent = loading ? 'Please wait...' : defaultText;
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      setBtn('login-btn', true, 'Login');
+      try {
+        const res  = await fetch(`${API}/api/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email:    document.getElementById('login-email').value,
+            password: document.getElementById('login-password').value
+          })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('user', JSON.stringify(data.user));
+          showMsg('login-msg', '✓ Login successful! Redirecting...', 'success');
+          setTimeout(() => window.location.href = 'dashboard.html', 1000);
+        } else {
+          showMsg('login-msg', data.message, 'error');
+          setBtn('login-btn', false, 'Login');
+        }
+      } catch {
+        showMsg('login-msg', 'Server error. Make sure server is running.', 'error');
+        setBtn('login-btn', false, 'Login');
+      }
+    }
+
+    async function handleRegister(e) {
+      e.preventDefault();
+      setBtn('reg-btn', true, 'Create Account');
+      try {
+        const res  = await fetch(`${API}/api/auth/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name:     document.getElementById('reg-name').value,
+            email:    document.getElementById('reg-email').value,
+            password: document.getElementById('reg-password').value
+          })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          showMsg('reg-msg', '✓ Registered! Switching to login...', 'success');
+          setTimeout(() => switchTab('login', document.querySelector('.tabs button')), 1500);
+        } else {
+          showMsg('reg-msg', data.message, 'error');
+        }
+      } catch {
+        showMsg('reg-msg', 'Server error. Make sure server is running.', 'error');
+      } finally {
+        setBtn('reg-btn', false, 'Create Account');
+      }
+    }
+  </script>
+
+</body>
+</html>

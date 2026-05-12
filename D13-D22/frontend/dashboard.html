@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #f4f4f4;
+      text-align: center;
+      padding: 50px;
+    }
+
+    .box {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      display: inline-block;
+      width: 300px;
+    }
+
+    input {
+      width: 70%;
+      padding: 8px;
+    }
+
+    button {
+      padding: 8px;
+      margin: 5px;
+      cursor: pointer;
+    }
+
+    li {
+      margin: 10px 0;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2>My Tasks</h2>
+
+  <input id="taskInput" placeholder="Enter task">
+  <button onclick="addTask()">Add</button>
+
+  <ul id="taskList"></ul>
+
+  <button onclick="logout()">Logout</button>
+</div>
+
+<script>
+const token = localStorage.getItem("token");
+
+if (!token) {
+  window.location.href = "index.html";
+}
+
+// ================= LOAD TASKS =================
+async function loadTasks() {
+  const res = await fetch("http://localhost:3000/api/tasks", {
+    headers: {
+      Authorization: "Bearer " + token
+    }
+  });
+
+  const tasks = await res.json();
+
+  const list = document.getElementById("taskList");
+  list.innerHTML = "";
+
+  tasks.forEach(t => {
+    list.innerHTML += `
+      <li>
+        ${t.title}
+        <button onclick="deleteTask('${t._id}')">❌</button>
+      </li>
+    `;
+  });
+}
+
+// ================= ADD =================
+async function addTask() {
+  const title = document.getElementById("taskInput").value;
+
+  if (!title) return;
+
+  await fetch("http://localhost:3000/api/tasks", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token
+    },
+    body: JSON.stringify({ title })
+  });
+
+  document.getElementById("taskInput").value = "";
+  loadTasks();
+}
+
+// ================= DELETE =================
+async function deleteTask(id) {
+  await fetch(`http://localhost:3000/api/tasks/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: "Bearer " + token
+    }
+  });
+
+  loadTasks();
+}
+
+// ================= LOGOUT =================
+function logout() {
+  localStorage.removeItem("token");
+  window.location.href = "index.html";
+}
+
+// initial load
+loadTasks();
+</script>
+
+</body>
+</html>
