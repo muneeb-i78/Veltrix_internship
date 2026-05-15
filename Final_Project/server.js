@@ -24,11 +24,7 @@ const app = express();
 
 // ── CORS — allow Vercel frontend ──
 app.use(cors({
-  origin: [
-    'https://tasik.vercel.app',
-    'http://127.0.0.1:5500',
-    'http://localhost:5500'
-  ]
+  origin: ['*']
 }));
 
 app.use(express.json());
