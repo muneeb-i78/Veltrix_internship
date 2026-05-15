@@ -23,9 +23,7 @@ connectDB();
 const app = express();
 
 // ── CORS — allow Vercel frontend ──
-app.use(cors({
-  origin: ['*']
-}));
+app.use(cors());
 
 app.use(express.json());
 
