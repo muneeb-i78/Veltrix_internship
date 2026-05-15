@@ -21,7 +21,16 @@ const dataRoutes = require('./routes/dataRoutes');
 connectDB();
 
 const app = express();
-app.use(cors());
+
+// ── CORS — allow Vercel frontend ──
+app.use(cors({
+  origin: [
+    'https://tasik.vercel.app',
+    'http://127.0.0.1:5500',
+    'http://localhost:5500'
+  ]
+}));
+
 app.use(express.json());
 
 app.get('/', (req, res) => res.json({ message: 'TASIK API is running!' }));
